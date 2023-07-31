@@ -1,12 +1,27 @@
-version: '3.3'
+version: '3'
 
 services:
+  tooljet:
+    tty: true
+    stdin_open: true
+    image: tooljet/tooljet-ce:latest
+    restart: always
+    env_file: .env
+    ports:
+      - 80:80
+    depends_on:
+      - postgres
+    environment:
+      SERVE_CLIENT: "true"
+      PORT: "80"
+    command: npm run start:prod
 
-    tooljet:
-        image: tooljet/try:latest    
-        container_name: tooljet
-        restart: unless-stopped
-        ports:
-            - '8200:80'
-        volumes:
-            - ./tooljet_data:/var/lib/postgresql/13/main
+  postgres:
+    image: postgres:13
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
