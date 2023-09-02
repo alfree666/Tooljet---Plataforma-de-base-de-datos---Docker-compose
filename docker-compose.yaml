@@ -5,6 +5,7 @@ services:
     tty: true
     stdin_open: true
     image: tooljet/tooljet-ce:latest
+    container_name: tooljet
     restart: unless-stopped
     env_file: .env
     ports:
@@ -18,6 +19,7 @@ services:
 
   postgres:
     image: postgres:15.4
+    container_name: tooljet-db
     restart: unless-stopped
     ports:
       - 5432:5432
